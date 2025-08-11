@@ -2,11 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
-// Create an axios instance with the base URL set
-const api = axios.create({
-  baseURL: 'http://localhost:8081' // No trailing slash!
-});
-
 function App() {
   const [product, setProduct] = useState({
     id: '',
@@ -21,16 +16,16 @@ function App() {
   const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
-
+const BASE_URL = 'http://localhost:8081';
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (isEditing) {
-        await api.put('/update', product);
+        await axios.put(`${BASE_URL}/update`, product);
         alert('Update successful');
         setIsEditing(false);
       } else {
-        await api.post('/insert', product);
+        await axios.post(`${BASE_URL}/insert`, product);
         alert('Insert successful');
       }
       setProduct({ id: '', name: '', os: '', price: '' });
@@ -42,12 +37,8 @@ function App() {
   };
 
   const fetchProducts = async () => {
-    try {
-      const res = await api.get('/display');
-      setProducts(res.data);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-    }
+    const res = await axios.get(`${BASE_URL}/display`);
+    setProducts(res.data);
   };
 
   const editProduct = (p) => {
@@ -55,17 +46,15 @@ function App() {
     setIsEditing(true);
   };
 
+  
   const deleteProduct = async (id) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
-      try {
-        await api.delete(`/delete/${id}`);
-        alert('Delete successful');
-        fetchProducts();
-      } catch (error) {
-        console.error('Error deleting product:', error);
-      }
+      await axios.delete(`${BASE_URL}/delete/${id}`);
+      alert('Delete successful');
+      fetchProducts();
     }
   };
+  
 
   useEffect(() => {
     fetchProducts();
@@ -178,12 +167,14 @@ function App() {
                 >
                   Edit
                 </button>
+                {
                 <button
-                  className="btn btn-danger btn-sm ms-2"
+                  className="btn btn-danger btn-sm"
                   onClick={() => deleteProduct(p.id)}
                 >
                   Delete
                 </button>
+                }
               </td>
             </tr>
           ))}
