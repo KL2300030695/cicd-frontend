@@ -16,7 +16,7 @@ function App() {
   const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };;
-const BASE_URL = 'http://localhost:8081/frontapp1';
+const BASE_URL = 'http://localhost:8081';
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -46,7 +46,6 @@ const BASE_URL = 'http://localhost:8081/frontapp1';
     setIsEditing(true);
   };
 
-  /*
   const deleteProduct = async (id) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       await axios.delete(`${BASE_URL}/delete/${id}`);
@@ -54,7 +53,7 @@ const BASE_URL = 'http://localhost:8081/frontapp1';
       fetchProducts();
     }
   };
-  */
+  
 
   useEffect(() => {
     fetchProducts();
@@ -167,14 +166,14 @@ const BASE_URL = 'http://localhost:8081/frontapp1';
                 >
                   Edit
                 </button>
-                {/*
+                {
                 <button
                   className="btn btn-danger btn-sm"
                   onClick={() => deleteProduct(p.id)}
                 >
                   Delete
                 </button>
-                */}
+                }
               </td>
             </tr>
           ))}
